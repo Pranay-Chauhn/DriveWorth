@@ -1,0 +1,26 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Environment variables / secrets
+.env
+
+# Logs
+*.log
+
+# Model & preprocessing files (optional)
+*.pkl
+
+# OS / system files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
