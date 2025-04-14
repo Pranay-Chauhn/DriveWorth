@@ -30,7 +30,7 @@ class TransType(str, Enum):
 
 class CarFeatures(BaseModel):
     milage: float
-'''    brand: str
+    brand: str
     model: str
     model_year: int
     fuel_type : FuelType
@@ -42,4 +42,4 @@ class CarFeatures(BaseModel):
     gear: int
     horsepower: int
     engine_size: int
-    cylinders: int'''
+    cylinders: int

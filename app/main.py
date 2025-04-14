@@ -21,4 +21,4 @@ def predict_price(data: CarFeatures):
     input_dict = data.model_dump()
     price = make_prediction(input_dict)
     print("running")
-    return {"Predicted Car Price": "hello"}
+    return {"Predicted Car Price": price}
