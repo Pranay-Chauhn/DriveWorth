@@ -15,9 +15,6 @@ __pycache__/
 # Logs
 *.log
 
-# Model & preprocessing files (optional)
-*.pkl
-
 # OS / system files
 .DS_Store
 Thumbs.db

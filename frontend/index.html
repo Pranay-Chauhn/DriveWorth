@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Car Price Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .car {
+            width: 80px;
+            transition: transform 1s ease-in-out;
+        }
+        .move {
+            transform: translateX(300px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto p-8 max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-8">🚗 Used Car Price Prediction</h1>
+
+        <form id="car-form" class="bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input class="border p-2 rounded" name="milage" type="number" step="any" placeholder="Mileage (km)" required>
+            <input class="border p-2 rounded" name="brand" placeholder="Brand" required>
+            <input class="border p-2 rounded" name="model" placeholder="Model" required>
+            <input class="border p-2 rounded" name="model_year" type="number" placeholder="Model Year" required>
+
+            <select class="border p-2 rounded" name="fuel_type">
+                <option disabled selected>Fuel Type</option>
+                <option>Gasoline</option>
+                <option>Hybrid</option>
+                <option>Unknown</option>
+                <option>Diesel</option>
+                <option>Electric</option>
+                <option>Plug-In Hybrid</option>
+                <option>E85 Flex Fuel</option>
+            </select>
+
+            <input class="border p-2 rounded" name="ext_col" placeholder="Exterior Color" required>
+            <input class="border p-2 rounded" name="int_col" placeholder="Interior Color" required>
+
+            <select class="border p-2 rounded" name="accident">
+                <option disabled selected>Accident Report</option>
+                <option>None_reported</option>
+                <option>At least 1 accident or damage reported</option>
+            </select>
+
+            <select class="border p-2 rounded" name="clean_title">
+                <option disabled selected>Clean Title</option>
+                <option>Yes</option>
+                <option>No</option>
+            </select>
+
+            <select class="border p-2 rounded" name="trans_type">
+                <option disabled selected>Transmission</option>
+                <option>Automatic</option>
+                <option>Manual</option>
+                <option>Other</option>
+            </select>
+
+            <input class="border p-2 rounded" name="gear" type="number" placeholder="Gear" required>
+            <input class="border p-2 rounded" name="horsepower" type="number" placeholder="Horsepower" required>
+            <input class="border p-2 rounded" name="engine_size" type="number" placeholder="Engine Size" required>
+            <input class="border p-2 rounded" name="cylinders" type="number" placeholder="Cylinders" required>
+
+            <div class="col-span-1 md:col-span-2 text-center">
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Predict Price</button>
+            </div>
+        </form>
+
+        <div class="flex justify-center mt-8">
+            <img src="https://i.imgur.com/ZyU3TjR.png" alt="car" id="car-img" class="car">
+        </div>
+
+        <div id="result" class="text-center text-2xl font-semibold mt-6"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('car-form');
+        const resultDiv = document.getElementById('result');
+        const carImg = document.getElementById('car-img');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultDiv.textContent = "";
+
+            // animate car
+            carImg.classList.add('move');
+            setTimeout(() => carImg.classList.remove('move'), 1000);
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.milage = parseFloat(data.milage);
+            data.model_year = parseInt(data.model_year);
+            data.gear = parseInt(data.gear);
+            data.horsepower = parseInt(data.horsepower);
+            data.engine_size = parseInt(data.engine_size);
+            data.cylinders = parseInt(data.cylinders);
+
+            try {
+                const res = await fetch("http://127.0.0.1:8000/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await res.json();
+
+                if (res.ok) {
+                    resultDiv.textContent = `💸 Predicted Car Price: $${result['Predicted Car Price'].toLocaleString()}`;
+                } else {
+                    resultDiv.textContent = "❌ Something went wrong. Check your input values.";
+                }
+            } catch (err) {
+                console.error(err);
+                resultDiv.textContent = "❌ Failed to connect to the server.";
+            }
+        });
+    </script>
+</body>
+</html>

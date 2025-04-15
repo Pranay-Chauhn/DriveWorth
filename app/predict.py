@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
 import joblib
+from app.model import model
 
 # Load transformation & Column info
-scaler = joblib.load("preprocessing/scaler.pkl")
-dummy_columns = joblib.load("preprocessing/dummy_columns.pkl")
-selected_features = joblib.load("artifacts/selected_features.pkl")
+scaler = joblib.load("app/preprocessing/scaler2.pkl")
+dummy_columns = joblib.load("app/preprocessing/dummy_columns.pkl")
+selected_features = joblib.load("app/artifacts/selected_features.pkl")
 
 
 def make_prediction(input_dict: dict):

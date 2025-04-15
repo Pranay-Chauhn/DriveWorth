@@ -1,2 +1,2 @@
 import joblib
-model = joblib.load("artifacts/model.pkl")
+model = joblib.load("app/artifacts/model.pkl")
