@@ -109,7 +109,11 @@
                 const result = await res.json();
 
                 if (res.ok) {
-                    resultDiv.textContent = `💸 Predicted Car Price: $${result['Predicted Car Price'].toLocaleString()}`;
+                    resultDiv.innerHTML = `
+    💸 <strong>Predicted Car Price:</strong> $${result['Predicted Car Price'].toLocaleString()} <br>
+    🎯 <strong>Estimated Range:</strong> ${result['Confidence Range']}
+`;
+
                 } else {
                     resultDiv.textContent = "❌ Something went wrong. Check your input values.";
                 }

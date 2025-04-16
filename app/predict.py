@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 from app.model import model
-
+from app.utils import Error
 # Load transformation & Column info
 scaler = joblib.load("app/preprocessing/scaler2.pkl")
 dummy_columns = joblib.load("app/preprocessing/dummy_columns.pkl")
@@ -27,7 +27,13 @@ def make_prediction(input_dict: dict):
     input_final = input_encoded[selected_features]
 
     # Predict log(price), then Inverse
-    prediction_log = model.predict(input_final)
-    predicted_price = np.expm1(prediction_log[0])
+    predicted_log = model.predict(input_final)
+    predicted_price = np.expm1(predicted_log[0])
 
-    return round(predicted_price, 2)
+    lower_price = predicted_price - Error
+    upper_price = predicted_price + Error
+
+    #lower_price = np.expm1(lower_log[0])
+    #upper_price = np.expm1(upper_log[0])
+    return {"predicted_price" : round(predicted_price, 2),
+            "confidence_range" : [round(lower_price, 2),round(upper_price, 2)]}

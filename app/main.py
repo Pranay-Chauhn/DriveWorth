@@ -31,6 +31,8 @@ print("you are running the correct main.py!")
 @app.post("/predict")
 def predict_price(data: CarFeatures):
     input_dict = data.model_dump()
-    price = make_prediction(input_dict)
+    result = make_prediction(input_dict)
     print("running")
-    return {"Predicted Car Price": float(price)}
+    return {"Predicted Car Price": float(result['predicted_price']),
+            "Confidence Range": f"${float(result['confidence_range'][0])} - ${float(result['confidence_range'][1])}"
+            }
